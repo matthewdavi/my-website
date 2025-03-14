@@ -38,12 +38,7 @@
 /* Apply fonts to the document */
 body {
   font-family: var(--font-app-primary);
-  background: linear-gradient(
-    135deg,
-    var(--dark-color-background),
-    oklch(0.12 0.01 240)
-  );
-  background-attachment: fixed;
+  background: var(--color-background);
 }
 
 h1,
