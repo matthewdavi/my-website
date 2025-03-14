@@ -1,5 +1,6 @@
 ---
 // Define theme options as an array for easier management
+
 const themeOptions = [
   {
     id: "theme-system",
@@ -8,9 +9,10 @@ const themeOptions = [
     fontFamily:
       "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
     cssVars: {
-      // Font variables
-      "--font-app-primary": "var(--font-system)",
-      "--font-app-secondary": "var(--font-system)",
+      "--font-app-primary":
+        "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+      "--font-app-secondary":
+        "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
 
       // Color variables
       "--color-background": "#ffffff",
@@ -31,11 +33,12 @@ const themeOptions = [
     id: "theme-serif",
     value: "serif",
     label: "Serif",
-    fontFamily: "Georgia, 'Times New Roman', serif",
+    fontFamily: "Cochin, Garamond, Georgia, 'Times New Roman', serif",
     cssVars: {
-      // Font variables
-      "--font-app-primary": "var(--font-serif)",
-      "--font-app-secondary": "var(--font-serif)",
+      "--font-app-primary":
+        "Cochin, Garamond, Georgia, 'Times New Roman', serif",
+      "--font-app-secondary":
+        "Cochin, Garamond, Georgia, 'Times New Roman', serif",
 
       // Color variables
       "--color-background": "#f8f5f0",
@@ -58,9 +61,8 @@ const themeOptions = [
     label: "Newspaper",
     fontFamily: "'Times New Roman', Times, serif",
     cssVars: {
-      // Font variables
-      "--font-app-primary": "var(--font-serif)",
-      "--font-app-secondary": "var(--font-serif)",
+      "--font-app-primary": "'Times New Roman', Times, serif",
+      "--font-app-secondary": "'Times New Roman', Times, serif",
 
       // Color variables
       "--color-background": "#f5f5f0",
@@ -81,11 +83,10 @@ const themeOptions = [
     id: "theme-hacker",
     value: "hacker",
     label: "Hacker",
-    fontFamily: "'Courier New', Courier, monospace",
+    fontFamily: "monospace",
     cssVars: {
-      // Font variables
-      "--font-app-primary": "var(--font-mono)",
-      "--font-app-secondary": "var(--font-mono)",
+      "--font-app-primary": "'Courier New', Courier, monospace",
+      "--font-app-secondary": "'Courier New', Courier, monospace",
 
       // Color variables
       "--color-background": "#0d0d0d",
@@ -106,11 +107,13 @@ const themeOptions = [
     id: "theme-comic",
     value: "comic",
     label: "Comic",
-    fontFamily: "'Comic Sans MS', 'Comic Sans', cursive",
+    fontFamily:
+      "'Comic Sans MS', 'Comic Sans', 'Chalkboard', 'Marker Felt', 'Brush Script MT', sans-serif",
     cssVars: {
-      // Font variables
-      "--font-app-primary": "var(--font-comic)",
-      "--font-app-secondary": "var(--font-comic)",
+      "--font-app-primary":
+        "'Comic Sans MS', 'Comic Sans', 'Chalkboard', 'Marker Felt', 'Brush Script MT', sans-serif",
+      "--font-app-secondary":
+        "'Comic Sans MS', 'Comic Sans', 'Chalkboard', 'Marker Felt', 'Brush Script MT', sans-serif",
 
       // Color variables
       "--color-background": "#fffbeb",
@@ -133,9 +136,8 @@ const themeOptions = [
     label: "Fantasy",
     fontFamily: "'Papyrus', 'Brush Script MT', fantasy",
     cssVars: {
-      // Font variables
-      "--font-app-primary": "var(--font-fantasy)",
-      "--font-app-secondary": "var(--font-fantasy)",
+      "--font-app-primary": "'Papyrus', 'Brush Script MT', fantasy",
+      "--font-app-secondary": "'Papyrus', 'Brush Script MT', fantasy",
 
       // Color variables
       "--color-background": "#f0e6d2",
@@ -150,6 +152,34 @@ const themeOptions = [
       "--spacing-content": "1.5rem",
       "--spacing-block": "2.5rem",
       "--border-radius": "0.75rem",
+    },
+  },
+  {
+    id: "theme-wingdings",
+    value: "wingdings",
+    label: "Wingdings",
+    fontFamily:
+      "Wingdings, 'Comic Sans MS', 'Comic Sans', 'Chalkboard', 'Marker Felt', 'Brush Script MT', sans-serif",
+
+    cssVars: {
+      "--font-app-primary":
+        "Wingdings, 'Comic Sans MS', 'Comic Sans', 'Chalkboard', 'Marker Felt', 'Brush Script MT', sans-serif",
+      "--font-app-secondary":
+        "Wingdings, 'Comic Sans MS', 'Comic Sans', 'Chalkboard', 'Marker Felt', 'Brush Script MT', sans-serif",
+
+      // Color variables
+      "--color-background": "#f8f5f0",
+      "--color-surface": "#ffffff",
+      "--color-text-primary": "#2c2c2c",
+      "--color-text-secondary": "#5c5c5c",
+      "--color-border": "#e0d6c8",
+      "--color-accent-primary": "#8b4513",
+      "--color-accent-secondary": "#a0522d",
+
+      // Spacing variables
+      "--spacing-content": "1.2rem",
+      "--spacing-block": "2rem",
+      "--border-radius": "0.25rem",
     },
   },
 ];
@@ -187,7 +217,9 @@ function generateDisplayUpdateCSS() {
       const displayVars = themeOptions
         .map((t) => {
           const tShortId = t.id.replace("theme-", "");
-          return `--display-${tShortId}: ${t.id === theme.id ? "inline" : "none"};`;
+          return `--display-${tShortId}: ${
+            t.id === theme.id ? "inline" : "none"
+          };`;
         })
         .join(" ");
 
@@ -195,69 +227,79 @@ function generateDisplayUpdateCSS() {
     })
     .join("\n");
 }
+
+function generateFontVariables() {
+  const fonts = themeOptions
+    .map((theme) => {
+      return `--font-${theme.value}: ${theme.fontFamily};`;
+    })
+    .join("\n");
+
+  return `:root { ${fonts} }`;
+}
 ---
 
 <div class="theme-selector fixed bottom-6 left-6 z-50 select-none">
-  <!-- Dropdown toggle checkbox -->
-  <input type="checkbox" id="theme-toggle" class="theme-toggle sr-only" />
-
-  <!-- Dropdown toggle button -->
-  <label
-    for="theme-toggle"
-    class="flex items-center justify-between bg-surface px-4 py-2 rounded-full border border-border shadow-md cursor-pointer transition-transform hover:scale-105 w-40"
-  >
-    <!-- Theme display area -->
-    <div class="theme-display text-text-primary text-sm">
-      <!-- Each theme option will be shown/hidden based on radio selection -->
-      {
-        themeOptions.map((theme) => (
-          <span
-            class="theme-option"
-            style={`font-family: ${theme.fontFamily};`}
-            data-for={theme.id}
-          >
-            {theme.label}
-          </span>
-        ))
-      }
-    </div>
-    <span class="text-text-secondary text-xs dropdown-arrow">▼</span>
-  </label>
-
-  <!-- Dropdown menu - hidden by default, shown on toggle/hover -->
-  <div
-    class="dropdown-menu absolute bottom-full mb-2 left-0 bg-surface border border-border rounded-lg shadow-lg overflow-hidden w-40 opacity-0 invisible transition-all duration-200 transform origin-bottom scale-95"
-  >
-    <!-- Theme options -->
-    <div class="flex flex-col">
-      {
-        themeOptions.map((theme) => (
-          <>
-            <input
-              type="radio"
-              id={theme.id}
-              name="theme-choice"
-              value={theme.value}
-              class="sr-only theme-radio"
-              checked={theme.id === "theme-system"}
-            />
-            <label
-              for={theme.id}
-              class="px-4 py-2 cursor-pointer hover:bg-background text-text-primary text-sm transition-colors"
+  <!-- Focusable dropdown container – clicking outside will remove focus -->
+  <div class="dropdown-container" tabindex="0">
+    <!-- Dropdown toggle button (no checkbox used) -->
+    <label
+      class="flex items-center justify-between bg-surface px-4 py-2 rounded-full border border-border shadow-md cursor-pointer transition-transform hover:scale-105 w-40"
+    >
+      <div class="theme-display text-text-primary text-sm">
+        {
+          themeOptions.map((theme) => (
+            <span
+              class="theme-option"
               style={`font-family: ${theme.fontFamily};`}
+              data-for={theme.id}
             >
               {theme.label}
-            </label>
-          </>
-        ))
-      }
+            </span>
+          ))
+        }
+      </div>
+      <span class="text-text-secondary text-xs dropdown-arrow">▼</span>
+    </label>
+
+    <!-- Dropdown menu -->
+    <div
+      class="dropdown-menu absolute bottom-full mb-2 left-0 bg-surface border border-border rounded-lg shadow-lg overflow-hidden w-40 transition-all duration-200 transform origin-bottom scale-95"
+    >
+      <div class="flex flex-col">
+        {
+          themeOptions.map((theme) => (
+            <>
+              <input
+                type="radio"
+                id={theme.id}
+                name="theme-choice"
+                value={theme.value}
+                class="sr-only theme-radio"
+                checked={theme.id === "theme-system"}
+              />
+              <label
+                for={theme.id}
+                class="px-4 py-2 cursor-pointer hover:bg-background text-text-primary text-sm transition-colors"
+                style={`font-family: ${theme.fontFamily};`}
+              >
+                {theme.label}
+              </label>
+            </>
+          ))
+        }
+      </div>
     </div>
   </div>
+  <!-- Dropdown overlay: When visible, tapping it shifts focus away from the dropdown -->
+  <div class="dropdown-overlay" tabindex="0"></div>
 </div>
 
+<style is:global set:html={generateFontVariables()}></style>
 <style is:global set:html={generateThemeSelectionCSS()}></style>
 <style is:global set:html={generateDisplayVariablesCSS()}></style>
 <style is:global set:html={generateDisplayUpdateCSS()}></style>
+
 <style>
   /* Hide the actual radio buttons */
   .sr-only {
@@ -278,12 +320,12 @@ function generateDisplayUpdateCSS() {
     color: white;
   }
 
-  /* Hide all theme options by default */
+  /* Hide theme options by default */
   .theme-option {
     display: none;
   }
 
-  /* Generate CSS for showing/hiding theme options */
+  /* Setting up display variables for themes */
   .theme-selector {
     --display-system: none;
     --display-serif: none;
@@ -293,27 +335,56 @@ function generateDisplayUpdateCSS() {
     --display-fantasy: none;
   }
 
-  /* Show dropdown on hover (for desktop) */
-  .theme-selector:hover .dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1);
+  /* Dropdown container is focusable via tabindex */
+  .dropdown-container {
+    position: relative;
+    outline: none;
   }
 
-  /* Show dropdown when checkbox is checked (for mobile) */
-  .theme-toggle:checked ~ .dropdown-menu {
+  /* By default, hide the dropdown menu */
+  .dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.95);
+    pointer-events: none;
+    z-index: 41;
+  }
+
+  /* Open dropdown when the container is focused */
+  .dropdown-container:focus-within .dropdown-menu {
     opacity: 1;
     visibility: visible;
     transform: scale(1);
+    pointer-events: auto;
   }
 
   /* Rotate arrow when dropdown is open */
-  .theme-toggle:checked ~ label .dropdown-arrow {
+  .dropdown-container:focus-within .dropdown-arrow {
     transform: rotate(180deg);
   }
 
   /* Transition for arrow rotation */
   .dropdown-arrow {
     transition: transform 0.2s ease;
+  }
+
+  /* --- Overlay for mobile --- */
+  .dropdown-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    z-index: 40;
+  }
+
+  /* Show overlay when dropdown container is focused */
+  .theme-selector:has(.dropdown-container:focus-within) .dropdown-overlay {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
   }
 </style>

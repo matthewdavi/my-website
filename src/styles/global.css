@@ -20,15 +20,6 @@
     Helvetica, Arial, sans-serif;
   --font-app-secondary: Georgia, "Times New Roman", serif;
 
-  /* Font options - all built-in browser fonts */
-  --font-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif;
-  --font-serif: Georgia, "Times New Roman", serif;
-  --font-mono: "Courier New", Courier, monospace;
-  --font-comic: "Comic Sans MS", "Comic Sans", cursive;
-  --font-fantasy: "Papyrus", "Brush Script MT", fantasy;
-  --font-retro: "Courier", monospace;
-
   /* Dark mode variables */
   --dark-color-mint-500: oklch(0.65 0.13 178);
   --dark-color-background: oklch(0.25 0.01 240); /* Lighter dark gray */
