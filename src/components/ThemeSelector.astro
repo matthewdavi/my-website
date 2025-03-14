@@ -197,9 +197,13 @@ function generateDisplayUpdateCSS() {
 }
 ---
 
-<div class="theme-selector fixed bottom-6 left-6 z-50 select-none group">
+<div class="theme-selector fixed bottom-6 left-6 z-50 select-none">
+  <!-- Dropdown toggle checkbox -->
+  <input type="checkbox" id="theme-toggle" class="theme-toggle sr-only" />
+
   <!-- Dropdown toggle button -->
-  <div
+  <label
+    for="theme-toggle"
     class="flex items-center justify-between bg-surface px-4 py-2 rounded-full border border-border shadow-md cursor-pointer transition-transform hover:scale-105 w-40"
   >
     <!-- Theme display area -->
@@ -217,12 +221,12 @@ function generateDisplayUpdateCSS() {
         ))
       }
     </div>
-    <span class="text-text-secondary text-xs">▼</span>
-  </div>
+    <span class="text-text-secondary text-xs dropdown-arrow">▼</span>
+  </label>
 
-  <!-- Dropdown menu - hidden by default, shown on hover -->
+  <!-- Dropdown menu - hidden by default, shown on toggle/hover -->
   <div
-    class="absolute bottom-full mb-2 left-0 bg-surface border border-border rounded-lg shadow-lg overflow-hidden w-40 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-bottom scale-95 group-hover:scale-100"
+    class="dropdown-menu absolute bottom-full mb-2 left-0 bg-surface border border-border rounded-lg shadow-lg overflow-hidden w-40 opacity-0 invisible transition-all duration-200 transform origin-bottom scale-95"
   >
     <!-- Theme options -->
     <div class="flex flex-col">
@@ -287,5 +291,29 @@ function generateDisplayUpdateCSS() {
     --display-hacker: none;
     --display-comic: none;
     --display-fantasy: none;
+  }
+
+  /* Show dropdown on hover (for desktop) */
+  .theme-selector:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+  }
+
+  /* Show dropdown when checkbox is checked (for mobile) */
+  .theme-toggle:checked ~ .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+  }
+
+  /* Rotate arrow when dropdown is open */
+  .theme-toggle:checked ~ label .dropdown-arrow {
+    transform: rotate(180deg);
+  }
+
+  /* Transition for arrow rotation */
+  .dropdown-arrow {
+    transition: transform 0.2s ease;
   }
 </style>
