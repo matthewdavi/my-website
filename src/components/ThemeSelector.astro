@@ -1,0 +1,291 @@
+---
+// Define theme options as an array for easier management
+const themeOptions = [
+  {
+    id: "theme-system",
+    value: "system",
+    label: "System",
+    fontFamily:
+      "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+    cssVars: {
+      // Font variables
+      "--font-app-primary": "var(--font-system)",
+      "--font-app-secondary": "var(--font-system)",
+
+      // Color variables
+      "--color-background": "#ffffff",
+      "--color-surface": "#f5f5f7",
+      "--color-text-primary": "#1d1d1f",
+      "--color-text-secondary": "#6e6e73",
+      "--color-border": "#d2d2d7",
+      "--color-accent-primary": "#0071e3",
+      "--color-accent-secondary": "#2997ff",
+
+      // Spacing variables
+      "--spacing-content": "1rem",
+      "--spacing-block": "1.5rem",
+      "--border-radius": "0.5rem",
+    },
+  },
+  {
+    id: "theme-serif",
+    value: "serif",
+    label: "Serif",
+    fontFamily: "Georgia, 'Times New Roman', serif",
+    cssVars: {
+      // Font variables
+      "--font-app-primary": "var(--font-serif)",
+      "--font-app-secondary": "var(--font-serif)",
+
+      // Color variables
+      "--color-background": "#f8f5f0",
+      "--color-surface": "#ffffff",
+      "--color-text-primary": "#2c2c2c",
+      "--color-text-secondary": "#5c5c5c",
+      "--color-border": "#e0d6c8",
+      "--color-accent-primary": "#8b4513",
+      "--color-accent-secondary": "#a0522d",
+
+      // Spacing variables
+      "--spacing-content": "1.2rem",
+      "--spacing-block": "2rem",
+      "--border-radius": "0.25rem",
+    },
+  },
+  {
+    id: "theme-newspaper",
+    value: "newspaper",
+    label: "Newspaper",
+    fontFamily: "'Times New Roman', Times, serif",
+    cssVars: {
+      // Font variables
+      "--font-app-primary": "var(--font-serif)",
+      "--font-app-secondary": "var(--font-serif)",
+
+      // Color variables
+      "--color-background": "#f5f5f0",
+      "--color-surface": "#fffef0",
+      "--color-text-primary": "#000000",
+      "--color-text-secondary": "#444444",
+      "--color-border": "#cccccc",
+      "--color-accent-primary": "#222222",
+      "--color-accent-secondary": "#555555",
+
+      // Spacing variables
+      "--spacing-content": "1.5rem",
+      "--spacing-block": "2.5rem",
+      "--border-radius": "0rem",
+    },
+  },
+  {
+    id: "theme-hacker",
+    value: "hacker",
+    label: "Hacker",
+    fontFamily: "'Courier New', Courier, monospace",
+    cssVars: {
+      // Font variables
+      "--font-app-primary": "var(--font-mono)",
+      "--font-app-secondary": "var(--font-mono)",
+
+      // Color variables
+      "--color-background": "#0d0d0d",
+      "--color-surface": "#1a1a1a",
+      "--color-text-primary": "#33ff33",
+      "--color-text-secondary": "#00cc00",
+      "--color-border": "#333333",
+      "--color-accent-primary": "#00ff00",
+      "--color-accent-secondary": "#00cc00",
+
+      // Spacing variables
+      "--spacing-content": "1rem",
+      "--spacing-block": "1.5rem",
+      "--border-radius": "0rem",
+    },
+  },
+  {
+    id: "theme-comic",
+    value: "comic",
+    label: "Comic",
+    fontFamily: "'Comic Sans MS', 'Comic Sans', cursive",
+    cssVars: {
+      // Font variables
+      "--font-app-primary": "var(--font-comic)",
+      "--font-app-secondary": "var(--font-comic)",
+
+      // Color variables
+      "--color-background": "#fffbeb",
+      "--color-surface": "#fff8dc",
+      "--color-text-primary": "#333333",
+      "--color-text-secondary": "#666666",
+      "--color-border": "#ffcc66",
+      "--color-accent-primary": "#ff6b6b",
+      "--color-accent-secondary": "#ff9e7d",
+
+      // Spacing variables
+      "--spacing-content": "1.2rem",
+      "--spacing-block": "2rem",
+      "--border-radius": "1rem",
+    },
+  },
+  {
+    id: "theme-fantasy",
+    value: "fantasy",
+    label: "Fantasy",
+    fontFamily: "'Papyrus', 'Brush Script MT', fantasy",
+    cssVars: {
+      // Font variables
+      "--font-app-primary": "var(--font-fantasy)",
+      "--font-app-secondary": "var(--font-fantasy)",
+
+      // Color variables
+      "--color-background": "#f0e6d2",
+      "--color-surface": "#e6d8c0",
+      "--color-text-primary": "#4b3621",
+      "--color-text-secondary": "#6f4e37",
+      "--color-border": "#c19a6b",
+      "--color-accent-primary": "#8b4513",
+      "--color-accent-secondary": "#a0522d",
+
+      // Spacing variables
+      "--spacing-content": "1.5rem",
+      "--spacing-block": "2.5rem",
+      "--border-radius": "0.75rem",
+    },
+  },
+];
+
+// Generate CSS for theme selection
+const generateThemeSelectionCSS = () => {
+  return themeOptions
+    .map(
+      (theme) => `
+    /* Theme selection for ${theme.label} */
+    :root:has(#${theme.id}:checked) {
+      ${Object.entries(theme.cssVars)
+        .map(([key, value]) => `${key}: ${value};`)
+        .join("\n      ")}
+    }
+  `
+    )
+    .join("\n");
+};
+
+// Generate CSS for display variables
+function generateDisplayVariablesCSS() {
+  return themeOptions
+    .map((theme) => {
+      const shortId = theme.id.replace("theme-", "");
+      return `.theme-option[data-for="${theme.id}"] { display: var(--display-${shortId}); }`;
+    })
+    .join("\n");
+}
+
+// Generate CSS for updating display variables
+function generateDisplayUpdateCSS() {
+  return themeOptions
+    .map((theme) => {
+      const displayVars = themeOptions
+        .map((t) => {
+          const tShortId = t.id.replace("theme-", "");
+          return `--display-${tShortId}: ${t.id === theme.id ? "inline" : "none"};`;
+        })
+        .join(" ");
+
+      return `:root:has(#${theme.id}:checked) .theme-selector { ${displayVars} }`;
+    })
+    .join("\n");
+}
+---
+
+<div class="theme-selector fixed bottom-6 left-6 z-50 select-none group">
+  <!-- Dropdown toggle button -->
+  <div
+    class="flex items-center justify-between bg-surface px-4 py-2 rounded-full border border-border shadow-md cursor-pointer transition-transform hover:scale-105 w-40"
+  >
+    <!-- Theme display area -->
+    <div class="theme-display text-text-primary text-sm">
+      <!-- Each theme option will be shown/hidden based on radio selection -->
+      {
+        themeOptions.map((theme) => (
+          <span
+            class="theme-option"
+            style={`font-family: ${theme.fontFamily};`}
+            data-for={theme.id}
+          >
+            {theme.label}
+          </span>
+        ))
+      }
+    </div>
+    <span class="text-text-secondary text-xs">▼</span>
+  </div>
+
+  <!-- Dropdown menu - hidden by default, shown on hover -->
+  <div
+    class="absolute bottom-full mb-2 left-0 bg-surface border border-border rounded-lg shadow-lg overflow-hidden w-40 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-bottom scale-95 group-hover:scale-100"
+  >
+    <!-- Theme options -->
+    <div class="flex flex-col">
+      {
+        themeOptions.map((theme) => (
+          <>
+            <input
+              type="radio"
+              id={theme.id}
+              name="theme-choice"
+              value={theme.value}
+              class="sr-only theme-radio"
+              checked={theme.id === "theme-system"}
+            />
+            <label
+              for={theme.id}
+              class="px-4 py-2 cursor-pointer hover:bg-background text-text-primary text-sm transition-colors"
+              style={`font-family: ${theme.fontFamily};`}
+            >
+              {theme.label}
+            </label>
+          </>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<style is:global set:html={generateThemeSelectionCSS()}></style>
+<style is:global set:html={generateDisplayVariablesCSS()}></style>
+<style is:global set:html={generateDisplayUpdateCSS()}></style>
+<style>
+  /* Hide the actual radio buttons */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Style for checked radio buttons */
+  input[type="radio"]:checked + label {
+    background-color: var(--color-accent-primary);
+    color: white;
+  }
+
+  /* Hide all theme options by default */
+  .theme-option {
+    display: none;
+  }
+
+  /* Generate CSS for showing/hiding theme options */
+  .theme-selector {
+    --display-system: none;
+    --display-serif: none;
+    --display-newspaper: none;
+    --display-hacker: none;
+    --display-comic: none;
+    --display-fantasy: none;
+  }
+</style>
