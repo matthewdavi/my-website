@@ -131,6 +131,32 @@ const themeOptions = [
     },
   },
   {
+    id: "theme-zesty",
+    value: "zesty",
+    label: "Zesty",
+    fontFamily:
+      "'Chalkduster', 'Segoe Print', 'Marker Felt', 'Comic Sans MS', cursive",
+    cssVars: {
+      // Font variables
+      "--font-app-primary": "var(--font-zesty)",
+      "--font-app-secondary": "var(--font-zesty)",
+
+      // Color variables - vibrant rainbow theme
+      "--color-background": "#fffcf0",
+      "--color-surface": "#ffffff",
+      "--color-text-primary": "#ff4500",
+      "--color-text-secondary": "#9932cc",
+      "--color-border": "#ffcc00",
+      "--color-accent-primary": "#00cc88",
+      "--color-accent-secondary": "#3399ff",
+
+      // Spacing variables
+      "--spacing-content": "1.2rem",
+      "--spacing-block": "1.8rem",
+      "--border-radius": "1.5rem",
+    },
+  },
+  {
     id: "theme-wingdings",
     value: "wingdings",
     label: "Wingdings",
@@ -138,10 +164,8 @@ const themeOptions = [
       "Wingdings, 'Comic Sans MS', 'Comic Sans', 'Chalkboard', 'Marker Felt', 'Brush Script MT', sans-serif",
 
     cssVars: {
-      "--font-app-primary":
-        "Wingdings, 'Comic Sans MS', 'Comic Sans', 'Chalkboard', 'Marker Felt', 'Brush Script MT', sans-serif",
-      "--font-app-secondary":
-        "Wingdings, 'Comic Sans MS', 'Comic Sans', 'Chalkboard', 'Marker Felt', 'Brush Script MT', sans-serif",
+      "--font-app-primary": "var(--font-wingdings)",
+      "--font-app-secondary": "var(--font-wingdings)",
 
       // Color variables
       "--color-background": "#f8f5f0",
@@ -315,6 +339,8 @@ function generateFontVariables() {
     --display-hacker: none;
     --display-comic: none;
     --display-fantasy: none;
+    --display-zesty: none;
+    --display-wingdings: none;
   }
 
   /* Dropdown container is focusable via tabindex */
@@ -368,5 +394,40 @@ function generateFontVariables() {
     opacity: 1;
     pointer-events: auto;
     visibility: visible;
+  }
+
+  :root:has(#theme-zesty:checked) body {
+    background-image: linear-gradient(
+      to bottom right,
+      #ff9a8b,
+      #ff6a88,
+      #ff99ac,
+      #ffc796,
+      #ffee93,
+      #a0ffe6,
+      #74c7ff,
+      #b39aff
+    );
+    background-attachment: fixed;
+    background-size: 300% 300%;
+    animation: gradient-shift 5s ease-in-out infinite;
+  }
+
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    25% {
+      background-position: 50% 100%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    75% {
+      background-position: 50% 0%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 </style>
