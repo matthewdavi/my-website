@@ -238,9 +238,12 @@ function generateFontVariables() {
 ---
 
 <div class="theme-selector fixed bottom-6 left-6 z-50 select-none">
-  <!-- Focusable dropdown container – clicking outside will remove focus -->
+  <!-- Focusable dropdown container -->
   <div class="dropdown-container" tabindex="0">
-    <!-- Dropdown toggle button (no checkbox used) -->
+    <!-- Hidden label for screen readers -->
+    <span class="sr-only">Select a theme</span>
+
+    <!-- Dropdown toggle button -->
     <label
       class="flex items-center justify-between bg-surface px-4 py-2 rounded-full border border-border shadow-md cursor-pointer transition-transform hover:scale-105 w-40"
     >
@@ -257,10 +260,13 @@ function generateFontVariables() {
           ))
         }
       </div>
-      <span class="text-text-secondary text-xs dropdown-arrow">▼</span>
+      <span
+        class="text-text-secondary text-xs dropdown-arrow"
+        aria-hidden="true">▼</span
+      >
     </label>
 
-    <!-- Dropdown menu -->
+    <!-- Dropdown menu remains visible as long as the container is focused -->
     <div
       class="dropdown-menu absolute bottom-full mb-2 left-0 bg-surface border border-border rounded-lg shadow-lg overflow-hidden w-40 transition-all duration-200 transform origin-bottom scale-95"
     >
@@ -275,17 +281,11 @@ function generateFontVariables() {
                 value={theme.value}
                 class="sr-only theme-radio"
                 checked={theme.id === "theme-system"}
-                class:list={clsx("theme-radio", {
-                  ["hidden! bg-red-500"]: theme.label.includes("Wingdings"),
-                })}
               />
               <label
                 for={theme.id}
                 class="px-4 py-2 cursor-pointer hover:bg-background text-text-primary text-sm transition-colors"
                 style={`font-family: ${theme.fontFamily};`}
-                class:list={clsx("", {
-                  ["hidden md:inline"]: theme.label.includes("Wingdings"),
-                })}
               >
                 {theme.label}
               </label>
@@ -295,7 +295,7 @@ function generateFontVariables() {
       </div>
     </div>
   </div>
-  <!-- Dropdown overlay: When visible, tapping it shifts focus away from the dropdown -->
+  <!-- Invisible overlay that allows focus to leave the container -->
   <div class="dropdown-overlay" tabindex="0"></div>
 </div>
 
@@ -305,7 +305,28 @@ function generateFontVariables() {
 <style is:global set:html={generateDisplayUpdateCSS()}></style>
 
 <style>
-  /* Hide the actual radio buttons */
+  /* Show the dropdown menu when the container is focused */
+  .dropdown-container:focus-within .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    pointer-events: auto;
+  }
+
+  /* Focus styles only when appropriate (e.g., keyboard navigation) */
+  .dropdown-container:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+  }
+
+  /* Style for checked radio input: add visual indicator to its associated label */
+  input[type="radio"]:checked + label {
+    background-color: var(--color-accent-primary);
+    color: white;
+    font-weight: bold;
+  }
+
+  /* Visually hide content but allow screen-reader access */
   .sr-only {
     position: absolute;
     width: 1px;
@@ -315,13 +336,7 @@ function generateFontVariables() {
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
-    border-width: 0;
-  }
-
-  /* Style for checked radio buttons */
-  input[type="radio"]:checked + label {
-    background-color: var(--color-accent-primary);
-    color: white;
+    border: 0;
   }
 
   /* Hide theme options by default */
@@ -356,20 +371,7 @@ function generateFontVariables() {
     z-index: 41;
   }
 
-  /* Open dropdown when the container is focused */
-  .dropdown-container:focus-within .dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1);
-    pointer-events: auto;
-  }
-
   /* Rotate arrow when dropdown is open */
-  .dropdown-container:focus-within .dropdown-arrow {
-    transform: rotate(180deg);
-  }
-
-  /* Transition for arrow rotation */
   .dropdown-arrow {
     transition: transform 0.2s ease;
   }
@@ -427,5 +429,11 @@ function generateFontVariables() {
     100% {
       background-position: 0% 50%;
     }
+  }
+
+  /* Add a focus outline to the label when its hidden radio input is focused */
+  input[type="radio"]:focus + label {
+    outline: 2px solid var(--color-accent-secondary);
+    outline-offset: 2px;
   }
 </style>
